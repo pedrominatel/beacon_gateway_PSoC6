@@ -42,19 +42,8 @@
 /*******************************************************************************
 *        Header Files
 *******************************************************************************/
-#include "app_bt_cfg.h"
-#include "wiced_bt_stack.h"
-#include "cybsp.h"
-#include "cy_retarget_io.h"
-#include <FreeRTOS.h>
-#include <task.h>
-#include <queue.h>
-#include <string.h>
-#include "cybt_platform_trace.h"
-#include "wiced_memory.h"
-#include "stdio.h"
-#include "beacon_utils.h"
-
+#include "common.h"
+#include "app_control.h"
 
 /*******************************************************************************
 *        Macro Definitions
@@ -86,8 +75,6 @@ wiced_bt_ble_multi_adv_params_t adv_parameters =
     .own_bd_addr = {0},
     .own_addr_type = BLE_ADDR_PUBLIC
 };
-
-uint32_t cnt = 0;
 
 /*******************************************************************************
 *        Function Prototypes
@@ -124,10 +111,6 @@ int main()
     cy_retarget_io_init(CYBSP_DEBUG_UART_TX, CYBSP_DEBUG_UART_RX,\
                         CY_RETARGET_IO_BAUDRATE);
 
-
-    result = cyhal_gpio_init(CYBSP_USER_LED2, CYHAL_GPIO_DIR_OUTPUT,
-                             CYHAL_GPIO_DRIVE_STRONG, CYBSP_LED_STATE_OFF);
-
     if (result != CY_RSLT_SUCCESS)
     {
         CY_ASSERT(0);
@@ -140,6 +123,8 @@ int main()
     printf("****Beacon Gateway Application Start****\n");
     printf("****************************************\n\n");
 
+    app_controlInit();
+
     /* Register call back and configuration with stack */
     result = wiced_bt_stack_init(app_bt_management_callback, &wiced_bt_cfg_settings);
 
@@ -147,6 +132,7 @@ int main()
     if( WICED_BT_SUCCESS == result)
     {
         printf("Bluetooth Stack Initialization Successful \n");
+        //cyhal_gpio_write(LED_B, CYBSP_LED_STATE_ON);
     }
     else
     {
@@ -164,30 +150,13 @@ int main()
 static void scan_result_callback(wiced_bt_ble_scan_results_t *scan_res, uint8_t *p_adv_data)
 {
 
-	uint8_t index=0;
-    uint8_t mfgLen;
-    //uint8_t* mfgData;
+    //printf("Found %02X:%02X:%02X:%02X:%02X:%02X RSSI: %d  [%d]: ",scan_res->remote_bd_addr[0],scan_res->remote_bd_addr[1],scan_res->remote_bd_addr[2],
+    		//scan_res->remote_bd_addr[3],scan_res->remote_bd_addr[4],scan_res->remote_bd_addr[5], scan_res->rssi, p_adv_data[4]);
 
-    //mfgData = wiced_bt_ble_check_advertising_data(p_adv_data,BTM_BLE_ADVERT_TYPE_MANUFACTURER,&mfgLen);
+	if(scan_res->rssi > -100){
+		eddy_decodeUID(p_adv_data);
+	}
 
-    printf("Found %02X:%02X:%02X:%02X:%02X:%02X RSSI: %d  [%d]: ",scan_res->remote_bd_addr[0],scan_res->remote_bd_addr[1],scan_res->remote_bd_addr[2],
-    		scan_res->remote_bd_addr[3],scan_res->remote_bd_addr[4],scan_res->remote_bd_addr[5], scan_res->rssi, mfgLen);
-
-    cyhal_gpio_write(CYBSP_USER_LED2, CYBSP_LED_STATE_ON);
-
-    int fieldLength=p_adv_data[index];
-    do {
-
-    	for(int i=0;i<=fieldLength;i++)
-    	printf("%02X ",p_adv_data[index+i]);
-
-    	index = index + fieldLength + 1;
-    fieldLength = p_adv_data[index];
-    } while(fieldLength);
-    printf("\n");
-
-    cyhal_gpio_write(CYBSP_USER_LED2, CYBSP_LED_STATE_OFF);
-    cnt++;
 }
 
 
@@ -232,7 +201,6 @@ wiced_result_t app_bt_management_callback(wiced_bt_management_evt_t event, wiced
             //wiced_bt_ble_scan(BTM_BLE_SCAN_TYPE_HIGH_DUTY, WICED_TRUE, scan_result_callback);
 
             wiced_bt_ble_observe(WICED_TRUE, 0, scan_result_callback);
-            cnt = 0;
 
         }
         break;
