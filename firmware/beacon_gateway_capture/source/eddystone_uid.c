@@ -28,15 +28,9 @@ void eddy_decodeUID(uint8_t *pkt){
 		if(pkt[20]==0xca){
 			app_controlLoadChannel(LOAD_A, CYBSP_LED_STATE_OFF);
 			app_timerLoadAReset();
-			//Start timer
 		} else if(pkt[20]==0xfa){
 			app_controlLoadChannel(LOAD_B, CYBSP_LED_STATE_OFF);
 			app_timerLoadBReset();
-			//Start timer
 		}
-
 	}
-
-
-
 }

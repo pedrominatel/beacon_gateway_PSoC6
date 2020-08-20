@@ -140,6 +140,9 @@ int main()
         CY_ASSERT(0);
     }
 
+    xTaskCreate(mqtt_client_task, "MQTT Client task", MQTT_CLIENT_TASK_STACK_SIZE,
+                NULL, MQTT_CLIENT_TASK_PRIORITY, NULL);
+
     /* Start the FreeRTOS scheduler */
     vTaskStartScheduler() ;
 
@@ -150,8 +153,8 @@ int main()
 static void scan_result_callback(wiced_bt_ble_scan_results_t *scan_res, uint8_t *p_adv_data)
 {
 
-    //printf("Found %02X:%02X:%02X:%02X:%02X:%02X RSSI: %d  [%d]: ",scan_res->remote_bd_addr[0],scan_res->remote_bd_addr[1],scan_res->remote_bd_addr[2],
-    		//scan_res->remote_bd_addr[3],scan_res->remote_bd_addr[4],scan_res->remote_bd_addr[5], scan_res->rssi, p_adv_data[4]);
+    printf("Found %02X:%02X:%02X:%02X:%02X:%02X RSSI: %d  [%d]: ",scan_res->remote_bd_addr[0],scan_res->remote_bd_addr[1],scan_res->remote_bd_addr[2],
+    		scan_res->remote_bd_addr[3],scan_res->remote_bd_addr[4],scan_res->remote_bd_addr[5], scan_res->rssi, p_adv_data[4]);
 
 	if(scan_res->rssi > -100){
 		eddy_decodeUID(p_adv_data);
@@ -198,7 +201,7 @@ wiced_result_t app_bt_management_callback(wiced_bt_management_evt_t event, wiced
             ble_app_set_advertisement_data();
 
             //Start scan passive
-            //wiced_bt_ble_scan(BTM_BLE_SCAN_TYPE_HIGH_DUTY, WICED_TRUE, scan_result_callback);
+            wiced_bt_ble_scan(BTM_BLE_SCAN_TYPE_HIGH_DUTY, WICED_TRUE, scan_result_callback);
 
             wiced_bt_ble_observe(WICED_TRUE, 0, scan_result_callback);
 
