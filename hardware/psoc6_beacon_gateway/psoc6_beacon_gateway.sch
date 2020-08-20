@@ -1,4 +1,518 @@
-EESchema Schematic File Version 2
-EELAYER 25 0
+EESchema Schematic File Version 4
+EELAYER 30 0
 EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 1 1
+Title "Change the Planet with PSoC® IoT Design"
+Date "2020-08-20"
+Rev "A"
+Comp "Pedro Minatel"
+Comment1 "TRIAC Shield for Arduino"
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L MCU_Module:Arduino_UNO_R3 A1
+U 1 1 5F3E8EC3
+P 2150 2550
+F 0 "A1" H 1350 3600 50  0000 C CNN
+F 1 "Arduino_UNO_R3" H 1600 3500 50  0000 C CNN
+F 2 "Module:Arduino_UNO_R3" H 2150 2550 50  0001 C CIN
+F 3 "https://www.arduino.cc/en/Main/arduinoBoardUno" H 2150 2550 50  0001 C CNN
+	1    2150 2550
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+3V3 #PWR0101
+U 1 1 5F3E9B29
+P 2250 1450
+F 0 "#PWR0101" H 2250 1300 50  0001 C CNN
+F 1 "+3V3" H 2150 1600 50  0000 C CNN
+F 2 "" H 2250 1450 50  0001 C CNN
+F 3 "" H 2250 1450 50  0001 C CNN
+	1    2250 1450
+	1    0    0    -1  
+$EndComp
+$Comp
+L SparkFun-PowerSymbols:5V #SUPPLY0101
+U 1 1 5F3EA5A8
+P 2350 1450
+F 0 "#SUPPLY0101" H 2400 1450 45  0001 L BNN
+F 1 "5V" H 2400 1600 45  0000 C CNN
+F 2 "XXX-00000" H 2700 1350 60  0000 C CNN
+F 3 "" H 2350 1450 60  0001 C CNN
+	1    2350 1450
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR0102
+U 1 1 5F3EAF68
+P 2150 3750
+F 0 "#PWR0102" H 2150 3500 50  0001 C CNN
+F 1 "GND" H 2155 3577 50  0000 C CNN
+F 2 "" H 2150 3750 50  0001 C CNN
+F 3 "" H 2150 3750 50  0001 C CNN
+	1    2150 3750
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2050 3650 2050 3700
+Wire Wire Line
+	2050 3700 2150 3700
+Wire Wire Line
+	2250 3700 2250 3650
+Wire Wire Line
+	2150 3750 2150 3700
+Connection ~ 2150 3700
+Wire Wire Line
+	2150 3700 2250 3700
+Wire Wire Line
+	2150 3650 2150 3700
+Wire Wire Line
+	2350 1450 2350 1550
+Wire Wire Line
+	2250 1450 2250 1550
+$Comp
+L Triac_Thyristor:BT136-800 Q1
+U 1 1 5F3EFCCA
+P 6200 2050
+F 0 "Q1" H 6328 2096 50  0000 L CNN
+F 1 "BT136-800" H 6328 2005 50  0000 L CNN
+F 2 "Package_TO_SOT_SMD:TO-252-2" H 6400 1975 50  0001 L CIN
+F 3 "http://www.micropik.com/PDF/BT136-600.pdf" H 6200 2050 50  0001 L CNN
+	1    6200 2050
+	1    0    0    -1  
+$EndComp
+$Comp
+L Relay_SolidState:MOC3063M U1
+U 1 1 5F3F0D40
+P 5350 2050
+F 0 "U1" H 5350 2375 50  0000 C CNN
+F 1 "MOC3063M" H 5350 2284 50  0000 C CNN
+F 2 "Package_DIP:DIP-6_W8.89mm_SMDSocket_LongPads" H 5150 1850 50  0001 L CIN
+F 3 "http://www.fairchildsemi.com/ds/MO/MOC3061M.pdf" H 5350 2050 50  0001 L CNN
+	1    5350 2050
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R_US R5
+U 1 1 5F3F39A0
+P 4800 1950
+F 0 "R5" V 4595 1950 50  0000 C CNN
+F 1 "470R" V 4686 1950 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 4840 1940 50  0001 C CNN
+F 3 "~" H 4800 1950 50  0001 C CNN
+	1    4800 1950
+	0    1    1    0   
+$EndComp
+$Comp
+L power:GND #PWR0103
+U 1 1 5F3F4018
+P 5000 2200
+F 0 "#PWR0103" H 5000 1950 50  0001 C CNN
+F 1 "GND" H 5005 2027 50  0000 C CNN
+F 2 "" H 5000 2200 50  0001 C CNN
+F 3 "" H 5000 2200 50  0001 C CNN
+	1    5000 2200
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5050 2150 5000 2150
+Wire Wire Line
+	5000 2150 5000 2200
+Wire Wire Line
+	4950 1950 5050 1950
+Wire Wire Line
+	4650 1950 4600 1950
+Wire Wire Line
+	5650 2150 5700 2150
+$Comp
+L Device:R_US R10
+U 1 1 5F3F54DF
+P 5950 2400
+F 0 "R10" V 5745 2400 50  0000 C CNN
+F 1 "330R" V 5836 2400 50  0000 C CNN
+F 2 "Resistor_SMD:R_1206_3216Metric" V 5990 2390 50  0001 C CNN
+F 3 "~" H 5950 2400 50  0001 C CNN
+	1    5950 2400
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:R_US R9
+U 1 1 5F3F5F68
+P 5950 1750
+F 0 "R9" V 5745 1750 50  0000 C CNN
+F 1 "390R" V 5836 1750 50  0000 C CNN
+F 2 "Resistor_SMD:R_1206_3216Metric" V 5990 1740 50  0001 C CNN
+F 3 "~" H 5950 1750 50  0001 C CNN
+	1    5950 1750
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	5700 1750 5700 1950
+Wire Wire Line
+	5700 1950 5650 1950
+Wire Wire Line
+	6200 1750 6200 1900
+Wire Wire Line
+	6200 2200 6200 2400
+Wire Wire Line
+	5700 2400 5700 2150
+Connection ~ 5700 2150
+Wire Wire Line
+	5700 2150 6050 2150
+Wire Wire Line
+	6100 2400 6200 2400
+Wire Wire Line
+	5700 2400 5800 2400
+Wire Wire Line
+	6100 1750 6200 1750
+Wire Wire Line
+	5700 1750 5800 1750
+Wire Wire Line
+	6200 1750 6500 1750
+Connection ~ 6200 1750
+Wire Wire Line
+	6200 2400 6500 2400
+Connection ~ 6200 2400
+Text GLabel 4600 1950 0    50   Input ~ 0
+CH1_CONTROL
+Text GLabel 6500 1750 2    50   Input ~ 0
+AC_PHA_IN
+Text GLabel 6500 2400 2    50   Input ~ 0
+CH1_AC_OUT
+$Comp
+L Triac_Thyristor:BT136-800 Q2
+U 1 1 5F404EE5
+P 6200 3150
+F 0 "Q2" H 6328 3196 50  0000 L CNN
+F 1 "BT136-800" H 6328 3105 50  0000 L CNN
+F 2 "Package_TO_SOT_SMD:TO-252-2" H 6400 3075 50  0001 L CIN
+F 3 "http://www.micropik.com/PDF/BT136-600.pdf" H 6200 3150 50  0001 L CNN
+	1    6200 3150
+	1    0    0    -1  
+$EndComp
+$Comp
+L Relay_SolidState:MOC3063M U2
+U 1 1 5F404EEB
+P 5350 3150
+F 0 "U2" H 5350 3475 50  0000 C CNN
+F 1 "MOC3063M" H 5350 3384 50  0000 C CNN
+F 2 "Package_DIP:DIP-6_W8.89mm_SMDSocket_LongPads" H 5150 2950 50  0001 L CIN
+F 3 "http://www.fairchildsemi.com/ds/MO/MOC3061M.pdf" H 5350 3150 50  0001 L CNN
+	1    5350 3150
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R_US R6
+U 1 1 5F404EF1
+P 4800 3050
+F 0 "R6" V 4595 3050 50  0000 C CNN
+F 1 "470R" V 4686 3050 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 4840 3040 50  0001 C CNN
+F 3 "~" H 4800 3050 50  0001 C CNN
+	1    4800 3050
+	0    1    1    0   
+$EndComp
+$Comp
+L power:GND #PWR0104
+U 1 1 5F404EF7
+P 5000 3300
+F 0 "#PWR0104" H 5000 3050 50  0001 C CNN
+F 1 "GND" H 5005 3127 50  0000 C CNN
+F 2 "" H 5000 3300 50  0001 C CNN
+F 3 "" H 5000 3300 50  0001 C CNN
+	1    5000 3300
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5050 3250 5000 3250
+Wire Wire Line
+	5000 3250 5000 3300
+Wire Wire Line
+	4950 3050 5050 3050
+Wire Wire Line
+	4650 3050 4600 3050
+Wire Wire Line
+	5650 3250 5700 3250
+$Comp
+L Device:R_US R12
+U 1 1 5F404F02
+P 5950 3500
+F 0 "R12" V 5745 3500 50  0000 C CNN
+F 1 "330R" V 5836 3500 50  0000 C CNN
+F 2 "Resistor_SMD:R_1206_3216Metric" V 5990 3490 50  0001 C CNN
+F 3 "~" H 5950 3500 50  0001 C CNN
+	1    5950 3500
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:R_US R11
+U 1 1 5F404F08
+P 5950 2850
+F 0 "R11" V 5745 2850 50  0000 C CNN
+F 1 "390R" V 5836 2850 50  0000 C CNN
+F 2 "Resistor_SMD:R_1206_3216Metric" V 5990 2840 50  0001 C CNN
+F 3 "~" H 5950 2850 50  0001 C CNN
+	1    5950 2850
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	5700 2850 5700 3050
+Wire Wire Line
+	5700 3050 5650 3050
+Wire Wire Line
+	6200 2850 6200 3000
+Wire Wire Line
+	6200 3300 6200 3500
+Wire Wire Line
+	5700 3500 5700 3250
+Connection ~ 5700 3250
+Wire Wire Line
+	5700 3250 6050 3250
+Wire Wire Line
+	6100 3500 6200 3500
+Wire Wire Line
+	5700 3500 5800 3500
+Wire Wire Line
+	6100 2850 6200 2850
+Wire Wire Line
+	5700 2850 5800 2850
+Wire Wire Line
+	6200 2850 6500 2850
+Connection ~ 6200 2850
+Wire Wire Line
+	6200 3500 6500 3500
+Connection ~ 6200 3500
+Text GLabel 4600 3050 0    50   Input ~ 0
+CH2_CONTROL
+Text GLabel 6500 2850 2    50   Input ~ 0
+AC_PHA_IN
+Text GLabel 6500 3500 2    50   Input ~ 0
+CH2_AC_OUT
+Wire Wire Line
+	1650 2250 1550 2250
+Wire Wire Line
+	1650 2350 1550 2350
+Wire Wire Line
+	1650 2650 1550 2650
+Wire Wire Line
+	1650 2750 1550 2750
+Wire Wire Line
+	1650 2850 1550 2850
+Wire Wire Line
+	1550 2950 1650 2950
+Text GLabel 1550 2250 0    50   Input ~ 0
+CH1_CONTROL
+Text GLabel 1550 2350 0    50   Input ~ 0
+CH2_CONTROL
+Text GLabel 1550 2650 0    50   Input ~ 0
+LED_CH1
+Text GLabel 1550 2750 0    50   Input ~ 0
+LED_CH2
+Text GLabel 1550 2850 0    50   Input ~ 0
+LED_STATUS
+Text GLabel 1550 2950 0    50   Input ~ 0
+LED_ACTIVITY
+$Comp
+L Device:LED D1
+U 1 1 5F43E039
+P 2200 4600
+F 0 "D1" H 2193 4345 50  0000 C CNN
+F 1 "LED" H 2193 4436 50  0000 C CNN
+F 2 "LED_SMD:LED_0805_2012Metric" H 2200 4600 50  0001 C CNN
+F 3 "~" H 2200 4600 50  0001 C CNN
+	1    2200 4600
+	-1   0    0    1   
+$EndComp
+$Comp
+L Device:LED D2
+U 1 1 5F43EC0D
+P 2200 5000
+F 0 "D2" H 2193 4745 50  0000 C CNN
+F 1 "LED" H 2193 4836 50  0000 C CNN
+F 2 "LED_SMD:LED_0805_2012Metric" H 2200 5000 50  0001 C CNN
+F 3 "~" H 2200 5000 50  0001 C CNN
+	1    2200 5000
+	-1   0    0    1   
+$EndComp
+$Comp
+L Device:LED D3
+U 1 1 5F43F4BE
+P 2200 5400
+F 0 "D3" H 2193 5145 50  0000 C CNN
+F 1 "LED" H 2193 5236 50  0000 C CNN
+F 2 "LED_SMD:LED_0805_2012Metric" H 2200 5400 50  0001 C CNN
+F 3 "~" H 2200 5400 50  0001 C CNN
+	1    2200 5400
+	-1   0    0    1   
+$EndComp
+$Comp
+L Device:LED D4
+U 1 1 5F43F8FD
+P 2200 5800
+F 0 "D4" H 2193 5545 50  0000 C CNN
+F 1 "LED" H 2193 5636 50  0000 C CNN
+F 2 "LED_SMD:LED_0805_2012Metric" H 2200 5800 50  0001 C CNN
+F 3 "~" H 2200 5800 50  0001 C CNN
+	1    2200 5800
+	-1   0    0    1   
+$EndComp
+$Comp
+L Device:R_US R1
+U 1 1 5F43FE03
+P 1800 4600
+F 0 "R1" V 1595 4600 50  0000 C CNN
+F 1 "470R" V 1686 4600 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 1840 4590 50  0001 C CNN
+F 3 "~" H 1800 4600 50  0001 C CNN
+	1    1800 4600
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:R_US R2
+U 1 1 5F44078F
+P 1800 5000
+F 0 "R2" V 1595 5000 50  0000 C CNN
+F 1 "470R" V 1686 5000 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 1840 4990 50  0001 C CNN
+F 3 "~" H 1800 5000 50  0001 C CNN
+	1    1800 5000
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:R_US R3
+U 1 1 5F440C82
+P 1800 5400
+F 0 "R3" V 1595 5400 50  0000 C CNN
+F 1 "470R" V 1686 5400 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 1840 5390 50  0001 C CNN
+F 3 "~" H 1800 5400 50  0001 C CNN
+	1    1800 5400
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:R_US R4
+U 1 1 5F4410AA
+P 1800 5800
+F 0 "R4" V 1595 5800 50  0000 C CNN
+F 1 "470R" V 1686 5800 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 1840 5790 50  0001 C CNN
+F 3 "~" H 1800 5800 50  0001 C CNN
+	1    1800 5800
+	0    1    1    0   
+$EndComp
+$Comp
+L power:GND #PWR0107
+U 1 1 5F4414B4
+P 2500 5900
+F 0 "#PWR0107" H 2500 5650 50  0001 C CNN
+F 1 "GND" H 2505 5727 50  0000 C CNN
+F 2 "" H 2500 5900 50  0001 C CNN
+F 3 "" H 2500 5900 50  0001 C CNN
+	1    2500 5900
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2350 4600 2500 4600
+Wire Wire Line
+	2500 4600 2500 5000
+Wire Wire Line
+	2350 5800 2500 5800
+Connection ~ 2500 5800
+Wire Wire Line
+	2500 5800 2500 5900
+Wire Wire Line
+	2350 5400 2500 5400
+Connection ~ 2500 5400
+Wire Wire Line
+	2500 5400 2500 5800
+Wire Wire Line
+	2350 5000 2500 5000
+Connection ~ 2500 5000
+Wire Wire Line
+	2500 5000 2500 5400
+Wire Wire Line
+	1950 5000 2050 5000
+Wire Wire Line
+	1950 4600 2050 4600
+Wire Wire Line
+	1950 5400 2050 5400
+Wire Wire Line
+	1950 5800 2050 5800
+Wire Wire Line
+	1650 4600 1550 4600
+Wire Wire Line
+	1650 5000 1550 5000
+Wire Wire Line
+	1650 5400 1550 5400
+Wire Wire Line
+	1650 5800 1550 5800
+Text GLabel 1550 4600 0    50   Input ~ 0
+LED_CH1
+Text GLabel 1550 5000 0    50   Input ~ 0
+LED_CH2
+Text GLabel 1550 5400 0    50   Input ~ 0
+LED_STATUS
+Text GLabel 1550 5800 0    50   Input ~ 0
+LED_ACTIVITY
+$Comp
+L Connector:Conn_01x02_Female J1
+U 1 1 5F495963
+P 9600 3000
+F 0 "J1" H 9628 2976 50  0000 L CNN
+F 1 "Conn_01x02_Female" H 9628 2885 50  0000 L CNN
+F 2 "Connector_Phoenix_MC:PhoenixContact_MC_1,5_2-G-3.5_1x02_P3.50mm_Horizontal" H 9600 3000 50  0001 C CNN
+F 3 "~" H 9600 3000 50  0001 C CNN
+	1    9600 3000
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	9400 3000 9300 3000
+Wire Wire Line
+	9400 3100 9300 3100
+Text GLabel 9300 3000 0    50   Input ~ 0
+AC_PHA_IN
+Text GLabel 9300 3100 0    50   Input ~ 0
+NEUTRAL
+$Comp
+L Connector:Conn_01x02_Female J2
+U 1 1 5F4CFE5D
+P 9600 3400
+F 0 "J2" H 9628 3376 50  0000 L CNN
+F 1 "Conn_01x02_Female" H 9628 3285 50  0000 L CNN
+F 2 "Connector_Phoenix_MC:PhoenixContact_MC_1,5_2-G-3.5_1x02_P3.50mm_Horizontal" H 9600 3400 50  0001 C CNN
+F 3 "~" H 9600 3400 50  0001 C CNN
+	1    9600 3400
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector:Conn_01x02_Female J3
+U 1 1 5F4D03A4
+P 9600 3700
+F 0 "J3" H 9628 3676 50  0000 L CNN
+F 1 "Conn_01x02_Female" H 9628 3585 50  0000 L CNN
+F 2 "Connector_Phoenix_MC:PhoenixContact_MC_1,5_2-G-3.5_1x02_P3.50mm_Horizontal" H 9600 3700 50  0001 C CNN
+F 3 "~" H 9600 3700 50  0001 C CNN
+	1    9600 3700
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	9400 3400 9300 3400
+Wire Wire Line
+	9400 3500 9300 3500
+Wire Wire Line
+	9400 3700 9300 3700
+Wire Wire Line
+	9400 3800 9300 3800
+Text GLabel 9300 3400 0    50   Input ~ 0
+CH1_AC_OUT
+Text GLabel 9300 3700 0    50   Input ~ 0
+CH2_AC_OUT
+Text GLabel 9300 3500 0    50   Input ~ 0
+NEUTRAL
+Text GLabel 9300 3800 0    50   Input ~ 0
+NEUTRAL
 $EndSCHEMATC
