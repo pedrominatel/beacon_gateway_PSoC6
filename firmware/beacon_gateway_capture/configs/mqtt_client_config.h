@@ -47,7 +47,7 @@
 * Macros
 ********************************************************************************/
 /* MQTT Broker/Server address and port used for the MQTT connection. */
-#define MQTT_BROKER_ADDRESS               "MY_AWS_IOT_ENDPOINT_ADDRESS"
+#define MQTT_BROKER_ADDRESS               "xxxxxxxxxxxxxxxxxxxxx.amazonaws.com"
 #define MQTT_PORT                         8883
 
 /* Set this macro to 'true' if the MQTT Broker being used is hosted by AWS IoT 
@@ -63,7 +63,7 @@
 /* The MQTT topic on which the LED control messages will be published and 
  * subscribed.
  */
-#define MQTT_TOPIC                        "ledstatus"
+#define MQTT_TOPIC                        "data"
 
 /* Configuration for the 'Will message' that will be published by the MQTT 
  * broker if the MQTT connection is unexpectedly closed. This configuration is 
@@ -71,19 +71,19 @@
  * will publish the Will message on the Will topic when it recognizes an 
  * unexpected disconnection from the client.
  */
-#define MQTT_WILL_TOPIC_NAME              MQTT_TOPIC "/will"
+#define MQTT_WILL_TOPIC_NAME              MQTT_TOPIC "/beacon"
 #define MQTT_WILL_MESSAGE                 ("MQTT client unexpectedly disconnected!")
 
 /* Set the QoS that is associated with the MQTT publish, and subscribe messages.
  * Valid choices are 0, and 1. The MQTT library currently does not support 
  * QoS 2, and hence should not be used in this macro.
  */
-#define MQTT_MESSAGES_QOS                 ( 1 )
+#define MQTT_MESSAGES_QOS                 ( 0 )
 
 /* Configure the MQTT username and password that can be used for AWS IoT  
  * Enhanced Custom Authentication.
  */
-#define MQTT_USERNAME                     "User"
+#define MQTT_USERNAME                     ""
 #define MQTT_PASSWORD                     ""
 
 /* The timeout in milliseconds for MQTT operations in this example. */
@@ -93,7 +93,7 @@
 #define MQTT_KEEP_ALIVE_SECONDS           ( 60 )
 
 /* MQTT client identifier prefix. */
-#define MQTT_CLIENT_IDENTIFIER_PREFIX     "psoc6-mqtt-client"
+#define MQTT_CLIENT_IDENTIFIER_PREFIX     "gateway"
 
 /* The longest client identifier that an MQTT server must accept (as defined
  * by the MQTT 3.1.1 spec) is 23 characters. Add 1 to include the length of the
@@ -104,8 +104,8 @@
 /* MQTT messages which are published and subscribed on the MQTT_TOPIC that
  * controls the device (user LED in this example) state.
  */
-#define MQTT_DEVICE_ON_MESSAGE            "TURN ON"
-#define MQTT_DEVICE_OFF_MESSAGE           "TURN OFF"
+#define MQTT_DEVICE_ON_MESSAGE            "01"
+#define MQTT_DEVICE_OFF_MESSAGE           "00"
 
 /* As per Internet Assigned Numbers Authority (IANA) the port numbers assigned 
  * for MQTT protocol are 1883 for non-secure connections and 8883 for secure
@@ -126,20 +126,17 @@
 /* PEM-encoded client certificate */
 #define CLIENT_CERTIFICATE      \
 "-----BEGIN CERTIFICATE-----\n" \
-"........base64 data........\n" \
-"-----END CERTIFICATE-----"
+"-----END CERTIFICATE-----\n" \
 
 /* PEM-encoded client private key */
 #define CLIENT_PRIVATE_KEY          \
 "-----BEGIN RSA PRIVATE KEY-----\n" \
-"..........base64 data..........\n" \
-"-----END RSA PRIVATE KEY-----"
+"-----END RSA PRIVATE KEY-----\n" \
 
 /* PEM-encoded Root CA certificate */
 #define ROOT_CA_CERTIFICATE     \
 "-----BEGIN CERTIFICATE-----\n" \
-"........base64 data........\n" \
-"-----END CERTIFICATE-----"
+"-----END CERTIFICATE-----\n" \
 
 /******************************************************************************
 * Global Variables

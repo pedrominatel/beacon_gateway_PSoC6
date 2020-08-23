@@ -119,10 +119,6 @@ void subscriber_task(void *pvParameters)
     /* To avoid compiler warnings */
     (void)pvParameters;
 
-    /* Initialize the User LED. */
-    cyhal_gpio_init(CYBSP_USER_LED, CYHAL_GPIO_DIR_OUTPUT, CYHAL_GPIO_DRIVE_PULLUP,
-                    CYBSP_LED_STATE_OFF);
-
     /* Subscribe with the configured parameters. */
     result = IotMqtt_SubscribeSync(mqttConnection,
                                    &subscribeInfo,
@@ -148,7 +144,6 @@ void subscriber_task(void *pvParameters)
         /* Block till a notification is received from the subscriber callback. */
         xTaskNotifyWait(0, 0, &received_led_state, portMAX_DELAY);
         /* Update the LED state as per received notification. */
-        cyhal_gpio_write(CYBSP_USER_LED, received_led_state);
         /* Update the current device state extern variable. */
         current_device_state = received_led_state;
     }

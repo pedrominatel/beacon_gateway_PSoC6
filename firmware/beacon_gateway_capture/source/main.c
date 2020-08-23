@@ -48,13 +48,6 @@
 /*******************************************************************************
 *        Macro Definitions
 *******************************************************************************/
-/* Allocate the multi-advertising instance numbers */
-#define BEACON_EDDYSTONE_URL        (1)
-#define BEACON_EDDYSTONE_UID        (2)
-
-/* This one byte will insert .com at the end of a URL in a URL frame. */
-#define DOT_COM (0x07)
-
 /* Minimum and maximum ADV interval */
 #define ADVERT_INTERVAL_MIN (20)
 #define ADVERT_INTERVAL_MAX (100)
@@ -140,6 +133,8 @@ int main()
         CY_ASSERT(0);
     }
 
+    //Start the MQTT client task
+    //Facing some issues...
     xTaskCreate(mqtt_client_task, "MQTT Client task", MQTT_CLIENT_TASK_STACK_SIZE,
                 NULL, MQTT_CLIENT_TASK_PRIORITY, NULL);
 
@@ -152,14 +147,10 @@ int main()
 
 static void scan_result_callback(wiced_bt_ble_scan_results_t *scan_res, uint8_t *p_adv_data)
 {
-
-    printf("Found %02X:%02X:%02X:%02X:%02X:%02X RSSI: %d  [%d]: ",scan_res->remote_bd_addr[0],scan_res->remote_bd_addr[1],scan_res->remote_bd_addr[2],
-    		scan_res->remote_bd_addr[3],scan_res->remote_bd_addr[4],scan_res->remote_bd_addr[5], scan_res->rssi, p_adv_data[4]);
-
-	if(scan_res->rssi > -100){
+    //Filter the RSSI to detect only close to the gateway
+	if(scan_res->rssi >-80){
 		eddy_decodeUID(p_adv_data);
 	}
-
 }
 
 
@@ -197,9 +188,6 @@ wiced_result_t app_bt_management_callback(wiced_bt_management_evt_t event, wiced
                     printf("Local Bluetooth Address: ");
                     //ble_address_print(bda);
 
-            /* Create the packet and begin advertising */
-            ble_app_set_advertisement_data();
-
             //Start scan passive
             wiced_bt_ble_scan(BTM_BLE_SCAN_TYPE_HIGH_DUTY, WICED_TRUE, scan_result_callback);
 
@@ -229,102 +217,3 @@ wiced_result_t app_bt_management_callback(wiced_bt_management_evt_t event, wiced
 
     return status;
 }
-
-/**************************************************************************************************
-* Function Name: ble_app_set_advertisement_data()
-***************************************************************************************************
-* Summary:
-*   This function configures the advertisement packet data
-*
-* Parameters:
-*   None
-*
-* Return:
-*   None
-*
-**************************************************************************************************/
-static void ble_app_set_advertisement_data(void)
-{
-    uint8_t packet_len;
-
-    /* Eddystone URL advertising packet */
-    uint8_t url_packet[BEACON_ADV_DATA_MAX];
-
-    /* Eddystone UID advertising packet */
-    uint8_t uid_packet[BEACON_ADV_DATA_MAX];
-
-    /* Name for infineon.com with null termination for the string added */
-    uint8_t url[] = {'i', 'n', 'f', 'i', 'n', 'e', 'o', 'n', DOT_COM, 0x00};
-    uint8_t uid_namespace[] = {0xFE, 0xED, 0xBE, 0xEF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
-    uint8_t uid_instance[] = {0x12, 0x34, 0x56, 0x78, 0x9A, 0xBC};
-
-    /* Set up a URL packet with max power, and implicit "http://www." prefix */
-    eddystone_set_data_for_url( adv_parameters.adv_tx_power, EDDYSTONE_URL_SCHEME_0, url, url_packet, &packet_len);
-
-    if(WICED_SUCCESS != wiced_set_multi_advertisement_data(url_packet, packet_len, BEACON_EDDYSTONE_URL))
-    {
-        printf("Set data for URL ADV failed\n");
-        CY_ASSERT(0);
-    }
-
-    if(WICED_SUCCESS != wiced_set_multi_advertisement_params(BEACON_EDDYSTONE_URL, &adv_parameters))
-    {
-        printf("Set params for URL ADV failed\n");
-        CY_ASSERT(0);
-    }
-
-    if(WICED_SUCCESS != wiced_start_multi_advertisements(MULTI_ADVERT_START, BEACON_EDDYSTONE_URL))
-    {
-        printf("Start ADV for URL ADV failed\n");
-        CY_ASSERT(0);
-    }
-
-    /* Set up a UID packet with ranging_data = 0, and the uid_namespace and uid_instance values declared above */
-    eddystone_set_data_for_uid(0, uid_namespace, uid_instance, uid_packet, &packet_len);
-
-    if(WICED_SUCCESS != wiced_set_multi_advertisement_data(uid_packet, packet_len, BEACON_EDDYSTONE_UID))
-    {
-        printf("Set data for UID ADV failed\n");
-        CY_ASSERT(0);
-    }
-
-    if(WICED_SUCCESS != wiced_set_multi_advertisement_params(BEACON_EDDYSTONE_UID, &adv_parameters))
-    {
-        printf("Set params for UID ADV failed\n");
-        CY_ASSERT(0);
-    }
-
-    if(WICED_SUCCESS != wiced_start_multi_advertisements(MULTI_ADVERT_START, BEACON_EDDYSTONE_UID))
-    {
-        printf("Start ADV for UID ADV failed\n");
-        CY_ASSERT(0);
-    }
-
-    printf("Multiple ADV started.\n"
-            "Use a scanner to scan for ADV packets.\n");
-}
-
-/**************************************************************************************************
-* Function Name: ble_address_print()
-***************************************************************************************************
-* Summary:
-*   This is the utility function that prints the address of the Bluetooth device
-*
-* Parameters:
-*   wiced_bt_device_address_t bdadr                : Bluetooth address
-*
-* Return:
-*  void
-*
-**************************************************************************************************/
-static void ble_address_print(wiced_bt_device_address_t bdadr)
-{
-    for(uint8_t i=0;i<BD_ADDR_LEN-1;i++)
-    {
-        printf("%2X:",bdadr[i]);
-    }
-    printf("%2X\n",bdadr[BD_ADDR_LEN-1]);
-}
-
-
-/* [] END OF FILE */

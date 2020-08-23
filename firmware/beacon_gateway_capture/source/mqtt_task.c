@@ -74,7 +74,7 @@
 #define MQTT_STATUS_QUEUE_LENGTH         (1u)
 
 /* Time in milliseconds to wait before creating the publisher task. */
-#define TASK_CREATION_DELAY_MS           (2000u)
+#define TASK_CREATION_DELAY_MS           (5000u)
 
 /* Flag Masks for tracking which cleanup functions must be called. */
 #define WCM_INITIALIZED                  (1lu << 0)
@@ -163,8 +163,11 @@ void mqtt_client_task(void *pvParameters)
      */
     if ( (wifi_connect() != EXIT_SUCCESS) || (mqtt_connect() != EXIT_SUCCESS) )
     {
+        printf(".");
         goto exit_cleanup;
     }
+
+    printf("MQTT continue...\n");
 
     /* Create the subscriber task and cleanup if the operation fails. */
     if (pdPASS != xTaskCreate(subscriber_task, "Subscriber task", SUBSCRIBER_TASK_STACK_SIZE,
@@ -341,6 +344,7 @@ static int mqtt_connect(void)
      */
     if ((connectionInfo.awsIotMqttMode) && (strlen(MQTT_USERNAME) > 0))
     {
+        printf("MQTT Authentication\n\n");
         connectionInfo.pUserName = MQTT_USERNAME;
         connectionInfo.pPassword = MQTT_PASSWORD;
         connectionInfo.userNameLength = sizeof(MQTT_USERNAME);
@@ -366,6 +370,7 @@ static int mqtt_connect(void)
 
     /* Establish the MQTT connection. */
     result = IotMqtt_Connect(&networkInfo, &connectionInfo, MQTT_TIMEOUT_MS, &mqttConnection);
+    printf("MQTT connecting...\n\n");
     CHECK_RESULT(result, CONNECTION_ESTABLISHED, "MQTT connection failed with error '%s'!\n\n", 
                  IotMqtt_strerror((IotMqttError_t) result));
     printf("MQTT connection successful.\n\n");
