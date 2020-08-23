@@ -125,7 +125,7 @@ int main()
     if( WICED_BT_SUCCESS == result)
     {
         printf("Bluetooth Stack Initialization Successful \n");
-        //cyhal_gpio_write(LED_B, CYBSP_LED_STATE_ON);
+        cyhal_gpio_write(LED_B, CYBSP_LED_STATE_ON);
     }
     else
     {
@@ -135,8 +135,8 @@ int main()
 
     //Start the MQTT client task
     //Facing some issues...
-    xTaskCreate(mqtt_client_task, "MQTT Client task", MQTT_CLIENT_TASK_STACK_SIZE,
-                NULL, MQTT_CLIENT_TASK_PRIORITY, NULL);
+    //xTaskCreate(mqtt_client_task, "MQTT Client task", MQTT_CLIENT_TASK_STACK_SIZE,
+    //            NULL, MQTT_CLIENT_TASK_PRIORITY, NULL);
 
     /* Start the FreeRTOS scheduler */
     vTaskStartScheduler() ;
@@ -149,6 +149,9 @@ static void scan_result_callback(wiced_bt_ble_scan_results_t *scan_res, uint8_t 
 {
     //Filter the RSSI to detect only close to the gateway
 	if(scan_res->rssi >-80){
+        cyhal_gpio_write(LED_B, CYBSP_LED_STATE_ON);
+        cyhal_gpio_write(LED_G, CYBSP_LED_STATE_OFF);
+        printf("RSSI: %d\n", scan_res->rssi);
 		eddy_decodeUID(p_adv_data);
 	}
 }
@@ -189,8 +192,7 @@ wiced_result_t app_bt_management_callback(wiced_bt_management_evt_t event, wiced
                     //ble_address_print(bda);
 
             //Start scan passive
-            wiced_bt_ble_scan(BTM_BLE_SCAN_TYPE_HIGH_DUTY, WICED_TRUE, scan_result_callback);
-
+            //wiced_bt_ble_scan(BTM_BLE_SCAN_TYPE_HIGH_DUTY, WICED_TRUE, scan_result_callback);
             wiced_bt_ble_observe(WICED_TRUE, 0, scan_result_callback);
 
         }
@@ -199,6 +201,7 @@ wiced_result_t app_bt_management_callback(wiced_bt_management_evt_t event, wiced
     case BTM_BLE_ADVERT_STATE_CHANGED_EVT:
 
         /* Advertisement State Changed */
+        printf("Advertisement...\n");
         p_adv_mode = &p_event_data->ble_advert_state_changed;
         if (BTM_BLE_ADVERT_OFF == *p_adv_mode)
         {

@@ -26,6 +26,8 @@ void eddy_decodeUID(uint8_t *pkt){
 
 		//Check the shared KEY (name space id)
 		//From byte 10 to 19 (10 bytes total)
+		cyhal_gpio_write(LED_B, CYBSP_LED_STATE_OFF);
+		cyhal_gpio_write(LED_G, CYBSP_LED_STATE_ON);
 
 		if(pkt[EDYY_PROTO_LOADCONTROL_EN]==true){
 			//Filter the package protocol to control load A or B
