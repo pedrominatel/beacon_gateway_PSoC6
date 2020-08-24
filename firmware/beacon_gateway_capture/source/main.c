@@ -55,24 +55,10 @@
 /*******************************************************************************
 *        Variable Definitions
 *******************************************************************************/
-wiced_bt_ble_multi_adv_params_t adv_parameters =
-{
-    .adv_int_min = 0x00A0, /* This is a requirement for BLE version 4.2 */
-    .adv_int_max = BTM_BLE_ADVERT_INTERVAL_MAX,
-    .adv_type = MULTI_ADVERT_NONCONNECTABLE_EVENT,
-    .channel_map = BTM_BLE_ADVERT_CHNL_37 | BTM_BLE_ADVERT_CHNL_38 | BTM_BLE_ADVERT_CHNL_39,
-    .adv_filter_policy = BTM_BLE_ADVERT_FILTER_ALL_CONNECTION_REQ_ALL_SCAN_REQ,
-    .adv_tx_power = MULTI_ADV_TX_POWER_MAX_INDEX,
-    .peer_bd_addr = {0},
-    .peer_addr_type = BLE_ADDR_PUBLIC,
-    .own_bd_addr = {0},
-    .own_addr_type = BLE_ADDR_PUBLIC
-};
 
 /*******************************************************************************
 *        Function Prototypes
 *******************************************************************************/
-static void                   ble_app_set_advertisement_data (void);
 static void                   ble_address_print              (wiced_bt_device_address_t bdadr);
 
 /* Callback function for Bluetooth stack management type events */
@@ -109,7 +95,6 @@ int main()
         CY_ASSERT(0);
     }
 
-
     cybt_platform_config_init(&bt_platform_cfg_settings);
 
     printf("***********  Beacon Gateway  ***********\n");
@@ -125,7 +110,7 @@ int main()
     if( WICED_BT_SUCCESS == result)
     {
         printf("Bluetooth Stack Initialization Successful \n");
-        cyhal_gpio_write(LED_B, CYBSP_LED_STATE_ON);
+        cyhal_gpio_write(LED_G, CYBSP_LED_STATE_ON);
     }
     else
     {
@@ -149,10 +134,14 @@ static void scan_result_callback(wiced_bt_ble_scan_results_t *scan_res, uint8_t 
 {
     //Filter the RSSI to detect only close to the gateway
 	if(scan_res->rssi >-80){
-        cyhal_gpio_write(LED_B, CYBSP_LED_STATE_ON);
-        cyhal_gpio_write(LED_G, CYBSP_LED_STATE_OFF);
-        printf("RSSI: %d\n", scan_res->rssi);
+        //Light LED on/off
+        cyhal_gpio_write(LED_G, CYBSP_LED_STATE_ON);
+        cyhal_gpio_write(LED_B, CYBSP_LED_STATE_OFF);
+        //printf("RSSI: %d\n", scan_res->rssi);
 		eddy_decodeUID(p_adv_data);
+        
+        //Check is the vendor is on the list
+        //eddy_macFilter(scan_res->remote_bd_addr);
 	}
 }
 
@@ -186,15 +175,11 @@ wiced_result_t app_bt_management_callback(wiced_bt_management_evt_t event, wiced
         if( WICED_BT_SUCCESS == p_event_data->enabled.status )
         {
             printf("Bluetooth Enabled\r\n");
-
             wiced_bt_dev_read_local_addr(bda);
-                    printf("Local Bluetooth Address: ");
-                    //ble_address_print(bda);
-
+            printf("Local Bluetooth Address: ");
+            //ble_address_print(bda);
             //Start scan passive
-            //wiced_bt_ble_scan(BTM_BLE_SCAN_TYPE_HIGH_DUTY, WICED_TRUE, scan_result_callback);
             wiced_bt_ble_observe(WICED_TRUE, 0, scan_result_callback);
-
         }
         break;
 
