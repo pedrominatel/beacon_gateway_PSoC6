@@ -171,6 +171,44 @@ void publisher_task(void *pvParameters)
     }
 }
 
+
+void aws_publish(char *payload)
+{
+
+    int result;
+    uint32_t publish_device_state;
+    mqtt_result_t mqtt_publish_status = MQTT_PUBLISH_FAILURE;
+
+    /* Assign the publish message payload according to received device state. */
+    publishInfo.pPayload = MQTT_DEVICE_OFF_MESSAGE;
+    
+    publishInfo.pPayload = payload;
+    publishInfo.payloadLength = strlen(publishInfo.pPayload);
+
+    printf("Publishing '%s' on the topic '%s'\n\n",
+            (char *)publishInfo.pPayload,
+            publishInfo.pTopicName);
+
+    /* Publish the MQTT message with the configured settings. */
+    result = IotMqtt_PublishSync(mqttConnection,
+                                    &publishInfo,
+                                    0,
+                                    MQTT_TIMEOUT_MS);
+
+    if (result != IOT_MQTT_SUCCESS)
+    {
+        /* Inform the MQTT client task about the publish failure and suspend
+            * the task for it to be killed by the MQTT client task later.
+            */
+        printf("MQTT Publish failed with error '%s'.\n\n",
+                IotMqtt_strerror((IotMqttError_t) result));
+        xQueueOverwrite(mqtt_status_q, &mqtt_publish_status);
+        vTaskSuspend( NULL );
+    }
+
+}
+
+
 /******************************************************************************
  * Function Name: isr_button_press
  ******************************************************************************

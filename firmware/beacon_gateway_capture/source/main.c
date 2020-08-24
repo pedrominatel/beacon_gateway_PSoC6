@@ -141,7 +141,7 @@ static void scan_result_callback(wiced_bt_ble_scan_results_t *scan_res, uint8_t 
 		eddy_decodeUID(p_adv_data);
         
         //Check is the vendor is on the list
-        //eddy_macFilter(scan_res->remote_bd_addr);
+        eddy_macFilter(scan_res->remote_bd_addr);
 	}
 }
 
@@ -177,7 +177,6 @@ wiced_result_t app_bt_management_callback(wiced_bt_management_evt_t event, wiced
             printf("Bluetooth Enabled\r\n");
             wiced_bt_dev_read_local_addr(bda);
             printf("Local Bluetooth Address: ");
-            //ble_address_print(bda);
             //Start scan passive
             wiced_bt_ble_observe(WICED_TRUE, 0, scan_result_callback);
         }

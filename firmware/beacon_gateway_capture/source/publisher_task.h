@@ -60,6 +60,7 @@ extern TaskHandle_t publisher_task_handle;
 ********************************************************************************/
 void publisher_task(void *pvParameters);
 void publisher_cleanup(void);
+void aws_publish(char *payload);
 
 #endif /* PUBLISHER_TASK_H_ */
 

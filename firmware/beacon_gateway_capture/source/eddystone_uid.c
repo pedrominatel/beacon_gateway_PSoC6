@@ -38,6 +38,10 @@ uint8_t eddy_macFilter(wiced_bt_device_address_t mac_addr)
 	{
 		if(spot_vendor == mac_safeVendor[i]){
 			printf("MAC on the list!\n");
+			app_controlLoadChannel(LOAD_B, CYBSP_LED_STATE_OFF);
+			//aws_publish("LOAD_A_ON");
+			app_timerLoadBReset();
+			//aws_publish(&mac_addr);
 			//printf("MAC: %02X:%02X:%02X:%02X:%02X:%02X\n", mac_addr[0], mac_addr[1], mac_addr[2], mac_addr[3], mac_addr[4], mac_addr[5]);
 		}
 	}
@@ -66,9 +70,11 @@ void eddy_decodeUID(uint8_t *pkt)
 				//Filter the package protocol to control load A or B
 				if(pkt[EDYY_PROTO_LOADCONTROL_CH]==0x01){
 					app_controlLoadChannel(LOAD_A, CYBSP_LED_STATE_OFF);
+					//aws_publish("LOAD_A_ON");
 					app_timerLoadAReset();
 				} else if(pkt[EDYY_PROTO_LOADCONTROL_CH]==0x02){
 					app_controlLoadChannel(LOAD_B, CYBSP_LED_STATE_OFF);
+					//aws_publish("LOAD_B_ON");
 					app_timerLoadBReset();
 				}
 			}

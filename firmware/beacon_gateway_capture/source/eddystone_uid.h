@@ -8,10 +8,11 @@
 #define EDYY_PROTO_LOADCONTROL_CH       21
 #define EDYY_PROTO_LOADCONTROL_MQTT     22
 
-#define MAC_SAFE_LIST_NUM               4
+#define MAC_SAFE_LIST_NUM               1
 
 extern const uint32_t mac_safeVendor[MAC_SAFE_LIST_NUM] = {
-    0x3868A4, 0xE509F0, 0xEEE0CF, 0xAC233F,
+    //0x3868A4, 0xE509F0, 0xEEE0CF, 0xAC233F,
+    0xAC233F,
 };
 
 void eddy_decodeUID(uint8_t *pkt);
